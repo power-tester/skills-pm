@@ -22,8 +22,11 @@ if (!SOURCE_REPO) {
 const { spawnSync } = require("node:child_process");
 
 function run(args) {
+  // Use --package skills to force npx to resolve the `skills` npm package,
+  // not the `skills` binary from this wrapper (which would cause an infinite loop).
+  const npxArgs = ["--package", "skills", ...args];
   console.log(`\n$ npx ${args.join(" ")}\n`);
-  const r = spawnSync("npx", args, { stdio: "inherit", shell: process.platform === "win32" });
+  const r = spawnSync("npx", npxArgs, { stdio: "inherit", shell: process.platform === "win32" });
   if (r.status !== 0) process.exit(r.status ?? 1);
 }
 

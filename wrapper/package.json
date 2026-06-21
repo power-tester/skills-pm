@@ -6,9 +6,6 @@
     "repo": "pramodyadav027/skills",
     "agent": "claude-code"
   },
-  "bin": {
-    "skills": "bin/skills-sync.js"
-  },
   "files": [
     "bin"
   ],
