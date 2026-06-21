@@ -14,10 +14,15 @@
 #   reviewer — GitHub handle of who audited it
 
 vendored:
+  # TODO: verify the correct upstream repo and path before enabling.
+  # The SKILL.md currently in skills/.vendored/web-design-guidelines/ was hand-authored
+  # to fetch content from vercel-labs/web-interface-guidelines at runtime — it is NOT
+  # directly vendored from that repo. Update repo/path to the actual upstream source
+  # (e.g. a vercel-labs skills collection repo) and then set enabled: true.
   - dest: web-design-guidelines
     repo: vercel-labs/web-interface-guidelines
     path: .
     commit: REPLACE_WITH_COMMIT_SHA
-    enabled: true
+    enabled: false
     audited: false
     reviewer: ""

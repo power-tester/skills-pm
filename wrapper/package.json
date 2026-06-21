@@ -18,8 +18,5 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@pramodyadav027/skills": "^1.0.0"
   }
 }
