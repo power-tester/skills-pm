@@ -114,28 +114,47 @@ async function cmdSync(ref) {
 
 // Maintainer: download SKILL.md files into skills/ for local review.
 async function cmdFetch() {
-  const skills = await loadManifest({ remote: false });
+  const entries = await loadManifest({ remote: false });
 
-  if (!skills.length) {
+  if (!entries.length) {
     console.log("No enabled skills found in manifest.");
     return;
   }
 
   const outDir = path.join(__dirname, "..", "skills");
+  const basePath = (p) => (p && p !== "." ? `${p}/` : "");
 
-  for (const skill of skills) {
-    const ref = skill.ref ?? "main";
-    const filePath =
-      skill.path && skill.path !== "." ? `${skill.path}/SKILL.md` : "SKILL.md";
-    const url = `https://raw.githubusercontent.com/${skill.repo}/${ref}/${filePath}`;
+  for (const entry of entries) {
+    const ref = entry.ref ?? "main";
 
-    process.stdout.write(`  ${skill.name}  (${skill.repo}@${ref})  ... `);
-    const content = await fetchUrl(url);
+    if (entry.select && entry.select.length > 0) {
+      // Multi-skill repo: download <path>/<skill>/SKILL.md for each selected skill.
+      for (const skillName of entry.select) {
+        const filePath = `${basePath(entry.path)}${skillName}/SKILL.md`;
+        const url = `https://raw.githubusercontent.com/${entry.repo}/${ref}/${filePath}`;
 
-    const dest = path.join(outDir, skill.name);
-    fs.mkdirSync(dest, { recursive: true });
-    fs.writeFileSync(path.join(dest, "SKILL.md"), content);
-    console.log("✓");
+        process.stdout.write(`  ${skillName}  (${entry.repo}@${ref})  ... `);
+        const content = await fetchUrl(url);
+
+        const dest = path.join(outDir, skillName);
+        fs.mkdirSync(dest, { recursive: true });
+        fs.writeFileSync(path.join(dest, "SKILL.md"), content);
+        console.log("✓");
+      }
+    } else {
+      // Single-skill repo: download <path>/SKILL.md.
+      const filePath = `${basePath(entry.path)}SKILL.md`;
+      const url = `https://raw.githubusercontent.com/${entry.repo}/${ref}/${filePath}`;
+      const label = entry.repo.split("/")[1];
+
+      process.stdout.write(`  ${label}  (${entry.repo}@${ref})  ... `);
+      const content = await fetchUrl(url);
+
+      const dest = path.join(outDir, label);
+      fs.mkdirSync(dest, { recursive: true });
+      fs.writeFileSync(path.join(dest, "SKILL.md"), content);
+      console.log("✓");
+    }
   }
 
   console.log(`\n✓ Skill files written to skills/.`);
