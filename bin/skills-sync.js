@@ -3,15 +3,16 @@
  * Thin wrapper over `npx skills` so users don't memorize flags.
  * Configure via the "skillsConfig" key in package.json.
  *
- *   npx @pramodyadav027/skills sync          install + update skills (Claude Code, global)
- *   npx @pramodyadav027/skills sync --tag v2 pin to a released tag instead of the default branch
- *   npx @pramodyadav027/skills list          list installed skills
- *   npx @pramodyadav027/skills remove        remove skills
+ *   npx @pramodyadav027/skills-pm sync             install + update skills (Claude Code, global)
+ *   npx @pramodyadav027/skills-pm sync --tag v2    pin to a released tag instead of the default branch
+ *   npx @pramodyadav027/skills-pm install          restore skills from skills-lock.json
+ *   npx @pramodyadav027/skills-pm list             list installed skills
+ *   npx @pramodyadav027/skills-pm remove           remove skills
  */
 const { skillsConfig, name: PKG_NAME } = require("../package.json");
 const SOURCE_REPO = skillsConfig?.repo;
 const AGENT = skillsConfig?.agent ?? "claude-code";
-// Derive env var name from package name: @pramodyadav027/skills -> PRAMODYADAV027_SKILLS_TAG
+// Derive env var name from package name: @pramodyadav027/skills-pm -> PRAMODYADAV027_SKILLS_PM_TAG
 const TAG_ENV_VAR = PKG_NAME.replace(/^@/, "").replace(/[^a-z0-9]+/gi, "_").toUpperCase() + "_TAG";
 
 if (!SOURCE_REPO) {
@@ -23,7 +24,7 @@ const { spawnSync } = require("node:child_process");
 
 function run(args) {
   // Use --package skills to force npx to resolve the `skills` npm package,
-  // not the `skills` binary from this wrapper (which would cause an infinite loop).
+  // not the `skills-pm` binary from this wrapper.
   const npxArgs = ["--package", "skills", ...args];
   console.log(`\n$ npx ${args.join(" ")}\n`);
   const r = spawnSync("npx", npxArgs, { stdio: "inherit", shell: process.platform === "win32" });
@@ -50,6 +51,10 @@ function main() {
       console.log(`\n✓ ${PKG_NAME} skills are installed and up to date.`);
       break;
     }
+    case "install":
+      // Restore skills from skills-lock.json (like `npm ci` for skills).
+      run(["skills", "experimental_install"]);
+      break;
     case "list":
       run(["skills", "list", "-g", "-a", AGENT]);
       break;
@@ -60,8 +65,9 @@ function main() {
       console.log(
         `Usage:\n` +
           `  npx ${PKG_NAME} sync [--tag <tag>]   install + update (default)\n` +
-          `  npx ${PKG_NAME} list                 list installed skills\n` +
-          `  npx ${PKG_NAME} remove               remove ${PKG_NAME} skills`
+          `  npx ${PKG_NAME} install               restore from skills-lock.json\n` +
+          `  npx ${PKG_NAME} list                  list installed skills\n` +
+          `  npx ${PKG_NAME} remove                remove ${PKG_NAME} skills`
       );
       process.exit(cmd === "help" || cmd === "--help" ? 0 : 1);
   }

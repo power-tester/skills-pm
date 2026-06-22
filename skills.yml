@@ -23,6 +23,6 @@ vendored:
     repo: vercel-labs/web-interface-guidelines
     path: .
     commit: REPLACE_WITH_COMMIT_SHA
-    enabled: false
+    enabled: true
     audited: false
     reviewer: ""
