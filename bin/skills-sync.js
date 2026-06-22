@@ -54,7 +54,7 @@ function main() {
       run(["skills", "list", "-g", "-a", AGENT]);
       break;
     case "remove":
-      run(["skills", "remove", "-g", "-a", AGENT, "-y"]);
+      run(["skills", "remove", "-g", "-y"]);
       break;
     default:
       console.log(

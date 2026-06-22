@@ -1,6 +1,6 @@
 {
   "name": "@pramodyadav027/skills",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Install and keep company skills up to date in Claude Code.",
   "skillsConfig": {
     "repo": "pramodyadav027/skills",
