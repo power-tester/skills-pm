@@ -9,10 +9,8 @@ Target agent: **Claude Code**. Install scope: **global** (applies across all of 
 ```
 .
 ├── skills.yml          # source of truth — list of skills and their upstream repos
-├── bin/skills-sync.js  # the @pramodyadav027/skills-pm CLI (consumer). (maintainer) calls bin/skills-sync.js directly using npm.
-├── package.json        # npm package definition
-└── examples/
-    └── consumer-ci.yml # example GitHub Actions workflow for consumer repos
+├── bin/skills-pm.js    # the @pramodyadav027/skills-pm CLI
+└── package.json        # npm package definition
 ```
 
 > `skills/` is **git-ignored** — it is a generated directory produced by `npx @pramodyadav027/skills-pm fetch` and used for local review only.
@@ -45,27 +43,6 @@ npx @pramodyadav027/skills-pm sync --ref v2
 ```bash
 npx @pramodyadav027/skills-pm list     # list installed skills
 npx @pramodyadav027/skills-pm remove   # remove all skills installed from this manifest
-```
-
-### Keep skills up to date automatically
-
-Add the following to a consumer repo at `.github/workflows/skills.yml`
-(or copy from [`examples/consumer-ci.yml`](./examples/consumer-ci.yml)):
-
-```yaml
-on:
-  schedule:
-    - cron: "0 7 * * 1"   # weekly, Monday 07:00 UTC
-  workflow_dispatch: {}
-
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - run: npx -y @pramodyadav027/skills-pm sync
 ```
 
 ---

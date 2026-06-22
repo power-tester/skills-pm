@@ -1,17 +1,17 @@
 {
   "name": "@pramodyadav027/skills-pm",
-  "version": "1.0.16",
+  "version": "2.0.0",
   "description": "Install and keep company skills up to date in Claude Code.",
   "skillsConfig": {
     "repo": "power-tester/skills",
     "agent": "claude-code"
   },
   "scripts": {
-    "fetch": "node bin/skills-sync.js fetch",
-    "sync": "node bin/skills-sync.js sync"
+    "fetch": "node bin/skills-pm.js fetch",
+    "sync": "node bin/skills-pm.js sync"
   },
   "bin": {
-    "skills-pm": "./bin/skills-sync.js"
+    "skills-pm": "./bin/skills-pm.js"
   },
   "files": [
     "bin"
