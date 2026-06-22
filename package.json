@@ -1,6 +1,6 @@
 {
   "name": "@pramodyadav027/skills-pm",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Install and keep company skills up to date in Claude Code.",
   "skillsConfig": {
     "repo": "power-tester/skills",

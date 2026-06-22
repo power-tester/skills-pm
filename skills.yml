@@ -22,3 +22,10 @@ skills:
     path: .
     ref: main
     enabled: true
+  
+  - name: agent-skills
+    repo: vercel-labs/agent-skills
+    path: .
+    ref: main
+    enabled: true
+
