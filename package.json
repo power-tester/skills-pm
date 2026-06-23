@@ -5,7 +5,8 @@
   "skillsConfig": {
     "repo": "power-tester/skills",
     "host": "github.com",
-    "agent": "claude-code"
+    "agent": "claude-code",
+    "telemetryUrl": ""
   },
   "scripts": {
     "fetch": "node bin/skills-pm.js fetch",

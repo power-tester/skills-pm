@@ -16,6 +16,7 @@ const { PKG_NAME, AGENT } = require("../lib/config");
 const { cmdInstall } = require("../lib/commands/install");
 const { cmdFetch } = require("../lib/commands/fetch");
 const { cmdStatus } = require("../lib/commands/status");
+const { cmdReport } = require("../lib/commands/report");
 const { run } = require("../lib/utils/runner");
 
 async function main() {
@@ -31,6 +32,9 @@ async function main() {
       break;
     case "status":
       await cmdStatus(ref);
+      break;
+    case "report":
+      await cmdReport(ref);
       break;
     case "fetch":
       await cmdFetch();
@@ -50,6 +54,7 @@ async function main() {
           `  npx ${PKG_NAME} status  [--ref <branch>]   show installed vs manifest skills\n` +
           `  npx ${PKG_NAME} list                       list installed skills\n` +
           `  npx ${PKG_NAME} remove                     remove skills\n` +
+          `  npx ${PKG_NAME} report  [--ref <branch>]   print compliance snapshot (JSON)\n` +
           `  npx ${PKG_NAME} fetch                      pull SKILL.md files locally for review`
       );
       break;
